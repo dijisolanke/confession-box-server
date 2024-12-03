@@ -51,6 +51,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("callUser", ({ userToCall, signalData }) => {
+    console.log(`User ${userToCall} is being called with signal`, signalData);
     const partnerSocket = io.sockets.sockets.get(userToCall);
     if (partnerSocket) {
       partnerSocket.emit("callUser", { signal: signalData });
@@ -60,6 +61,10 @@ io.on("connection", (socket) => {
   socket.on("answerCall", ({ signal }) => {
     const partnerId = activePairs.get(socket.id);
     if (partnerId) {
+      console.log(
+        `Answering call for partner ${partnerId} with signal`,
+        signal
+      );
       const partnerSocket = io.sockets.sockets.get(partnerId);
       if (partnerSocket) {
         partnerSocket.emit("callAccepted", signal);
