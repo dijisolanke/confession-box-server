@@ -7,7 +7,10 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "https://confession-box-server.onrender.com", // Allow requests from your front-end
+    origin: [
+      "https://confession-box.vercel.app",
+      "https://confession-box-server.onrender.com",
+    ], // Allow requests from your front-end
     methods: ["GET", "POST"],
   },
 });
