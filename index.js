@@ -10,19 +10,19 @@ const io = socketIo(server, {
     origin: [
       "https://confession-box.vercel.app",
       "https://confession-box-server.onrender.com",
-    ], // Allow requests from your front-end
+    ], // Allow requests from these addresses
     methods: ["GET", "POST"],
   },
 });
 
-const availableUsers = new Set(); // Track users available for matching
+const availableUsers = []; // Track users available for matching
 const activePairs = new Map(); // Track active chat pairs
 
 io.on("connection", (socket) => {
   console.log(`User connected: ${socket.id}`);
 
   // Add the user to the available pool and attempt to match.
-  availableUsers.add(socket.id);
+  availableUsers.push(socket.id);
   tryMatch();
 
   socket.on("disconnect", () => {
@@ -85,9 +85,8 @@ io.on("connection", (socket) => {
 
 function tryMatch() {
   if (availableUsers.size >= 2) {
-    const [user1, user2] = [...availableUsers].slice(0, 2);
-    availableUsers.delete(user1);
-    availableUsers.delete(user2);
+    const user1 = availableUsers.shift();
+    const user2 = availableUsers.shift();
 
     activePairs.set(user1, user2);
     activePairs.set(user2, user1);
