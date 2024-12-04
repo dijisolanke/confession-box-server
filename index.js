@@ -27,7 +27,7 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log(`User disconnected: ${socket.id}`);
-    availableUsers.delete(socket.id);
+    availableUsers = availableUsers.filter((id) => id !== socket.id); //delete from array
 
     // End chat if the user is in an active pair
     const partnerId = activePairs.get(socket.id);
