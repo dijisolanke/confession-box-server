@@ -4,26 +4,20 @@ const socketIo = require("socket.io");
 const cors = require("cors");
 
 const app = express();
-app.use(
-  cors({
-    origin: [
-      "https://confession-box.vercel.app",
-      "https://confession-box-server.onrender.com",
-    ],
-    methods: ["GET", "POST"],
-    credentials: true,
-  })
-);
+
+const corsOptions = {
+  origin: [
+    "https://confession-box.vercel.app",
+    "https://confession-box-server.onrender.com",
+  ],
+  methods: ["GET", "POST"],
+  credentials: true, // Allow credentials
+};
+
+app.use(cors(corsOptions));
 const server = http.createServer(app);
 const io = socketIo(server, {
-  cors: {
-    origin: [
-      "https://confession-box.vercel.app",
-      "https://confession-box-server.onrender.com",
-    ], // Allow requests from these addresses
-    methods: ["GET", "POST"],
-    credentials: true,
-  },
+  cors: corsOptions,
 });
 
 let availableUsers = []; // Track users available for matching
@@ -95,7 +89,7 @@ io.on("connection", (socket) => {
 });
 
 function tryMatch() {
-  if (availableUsers.size >= 2) {
+  if (availableUsers.length >= 2) {
     const user1 = availableUsers.shift();
     const user2 = availableUsers.shift();
 
