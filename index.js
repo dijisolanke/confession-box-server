@@ -26,7 +26,7 @@ const io = socketIo(server, {
   },
 });
 
-const availableUsers = []; // Track users available for matching
+let availableUsers = []; // Track users available for matching
 const activePairs = new Map(); // Track active chat pairs
 
 io.on("connection", (socket) => {
