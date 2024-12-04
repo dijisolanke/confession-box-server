@@ -4,6 +4,16 @@ const socketIo = require("socket.io");
 const cors = require("cors");
 
 const app = express();
+app.use(
+  cors({
+    origin: [
+      "https://confession-box.vercel.app",
+      "https://confession-box-server.onrender.com",
+    ],
+    methods: ["GET", "POST"],
+    credentials: true,
+  })
+);
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
@@ -15,17 +25,6 @@ const io = socketIo(server, {
     credentials: true,
   },
 });
-
-app.use(
-  cors({
-    origin: [
-      "https://confession-box.vercel.app",
-      "https://confession-box-server.onrender.com",
-    ],
-    methods: ["GET", "POST"],
-    credentials: true,
-  })
-);
 
 const availableUsers = []; // Track users available for matching
 const activePairs = new Map(); // Track active chat pairs
