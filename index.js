@@ -46,7 +46,7 @@ io.on("connection", (socket) => {
   socket.on("next", () => {
     // End current chat and re-add user to the pool
     endCurrentChat(socket.id);
-    availableUsers.add(socket.id);
+    availableUsers.push(socket.id);
     tryMatch();
   });
 
