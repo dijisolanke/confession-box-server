@@ -12,8 +12,20 @@ const io = socketIo(server, {
       "https://confession-box-server.onrender.com",
     ], // Allow requests from these addresses
     methods: ["GET", "POST"],
+    credentials: true,
   },
 });
+
+app.use(
+  cors({
+    origin: [
+      "https://confession-box.vercel.app",
+      "https://confession-box-server.onrender.com",
+    ],
+    methods: ["GET", "POST"],
+    credentials: true,
+  })
+);
 
 const availableUsers = []; // Track users available for matching
 const activePairs = new Map(); // Track active chat pairs
